@@ -277,6 +277,7 @@ export default class Slider extends PureComponent {
     return (
       <View
         {...other}
+        ref="mainContainer"
         style={[mainStyles.container, style]}
         onLayout={this._measureContainer}
       >
@@ -350,7 +351,7 @@ export default class Slider extends PureComponent {
 
   _handlePanResponderGrant = (e: Object, gestureState: Object) => {
     this._previousLeft = this.props.trackClickable
-      ? gestureState.x0 - this.state.thumbSize.width / 2
+      ? e.nativeEvent.locationX - this.state.thumbSize.width
       : this._getThumbLeft(this._getCurrentValue());
     this._fireChangeEvent("onSlidingStart");
   };
@@ -390,8 +391,8 @@ export default class Slider extends PureComponent {
     this._handleMeasure("thumbSize", x);
   };
 
-  _handleMeasure = (name: string, x: Object) => {
-    const { width, height } = x.nativeEvent.layout;
+  _handleMeasure = (name: string, el: Object) => {
+    const { width, height } = el.nativeEvent.layout;
     const size = { width, height };
 
     const storeName = `_${name}`;
